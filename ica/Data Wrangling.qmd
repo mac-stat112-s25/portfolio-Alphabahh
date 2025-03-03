@@ -1,5 +1,5 @@
 ---
-title: "Data Wrangling"
+title: "Data wrangling"
 format: html
 ---
 
@@ -14,22 +14,7 @@ fig-align: center
 code-fold: false
 ---
 
-::: {.callout-caution title="Learning Goals"}
--   Review wrangling verbs `select`, `mutate`, `filter`, `arrange`, `summarize`, `group_by`
--   Form conceptual understanding of code without running it
--   Practice using wrangling verbs in different way
--   Practice dealing with dates using `lubridate` functions
-:::
-
-::: {.callout-note title="Additional Resources"}
-For more information about the topics covered in this chapter, refer to the resources below:
-
--   [Date and Times (html)](https://r4ds.hadley.nz/datetimes) by Wickham, Çetinkaya-Rundel, & Grolemund 
-:::
-
-
-
-## Warm-up
+## Review
 
 
 ### Data Science Process {-}
@@ -582,6 +567,12 @@ penguins |>
   head()
 
 ```
+
+\
+\
+\
+\
+
 
 
 ```{r}
