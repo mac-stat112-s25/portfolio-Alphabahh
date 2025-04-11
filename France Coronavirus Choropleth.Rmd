@@ -1,0 +1,71 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r}
+# Install and load required libraries
+install.packages(c("sf", "ggplot2", "dplyr", "readr", "lubridate", "viridis"))
+library(sf)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(lubridate)
+library(viridis)
+
+# Load the COVID dataset
+covid_data <- read_csv("patient 2.csv")
+
+# Clean and format the data
+covid_data <- covid_data %>%
+  mutate(
+    confirmed_date = as.Date(confirmed_date),
+    region = trimws(region),
+    sex = tolower(sex),
+    status = tolower(status)
+  )
+
+# FILTER options (optional) - adjust these to your preference
+filtered_data <- covid_data %>%
+  filter(
+    !is.na(region),
+    confirmed_date >= as.Date("2020-03-01") & confirmed_date <= as.Date("2020-03-31"),  # Filter by March 2020
+    sex %in% c("male", "female"),  # Keep only male & female (exclude NA/unknown)
+    status %in% c("hospital", "home isolation", "released")  # Focus on tracked outcomes
+  )
+
+# Summarize: count cases by region
+covid_region_summary <- filtered_data %>%
+  group_by(region) %>%
+  summarise(cases = n())
+
+# Load French regions GeoJSON
+regions_geo <- st_read("https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/regions-version-simplifiee.geojson")
+
+# Merge COVID counts into spatial data
+france_regions_map <- regions_geo %>%
+  left_join(covid_region_summary, by = c("nom" = "region"))
+
+# Plot the choropleth
+ggplot(france_regions_map) +
+  geom_sf(aes(fill = cases), color = "white", size = 0.2) +
+  scale_fill_viridis(
+    name = "Confirmed Cases",
+    option = "magma",
+    direction = -1,
+    na.value = "grey90"
+  ) +
+  theme_minimal() +
+  labs(
+    title = "COVID-19 Cases in France by Region",
+    subtitle = "Filtered by March 2020, Status: Hospital/Home/Released, Male & Female Only",
+    caption = "Data source: patient 2.csv + GeoJSON by Gregoire David"
+  ) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "right"
+  )
+
+```
+
