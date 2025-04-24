@@ -225,7 +225,7 @@ classes |>
 
 ## Exercises
 
-{{< include activity-instructions.qmd >}}
+
 
 ### Exercise 1: Time slots {.unnumbered}
 

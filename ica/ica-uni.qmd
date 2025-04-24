@@ -179,7 +179,7 @@ If you're working on Mac's RStudio server, `tidyverse` is already installed on t
 
 ## Exercises
 
-{{< include activity-instructions.qmd >}}
+
 
 
 ```{r}
